@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Args | New Argument</title>
+    <link rel="stylesheet" href="global.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-hcaptcha"></script>
+</head>
+<body>
+    <div class="center">
+        <div class="invisible-card">
+            <h1>New Argument</h1>
+            <input type="text" name="title" id="title" placeholder="Title">
+            <br>
+            <h-captcha id="captcha" site-key="bfe0e662-099f-450d-9d85-4d11668930f2" size="invisible" tabindex="0"></h-captcha>
+            <button id="send">Send</button>
+            <p id="error"></p>
+        </div>
+    </div>
+</body>
+<script>
+    var titleElement = document.getElementById("title");
+    var captchaElement = document.getElementById("captcha");
+
+    document.getElementById("send").onclick = () => {
+        captchaElement.execute()
+    }
+
+    captchaElement.addEventListener("verified", async({ token }) => {
+        let response = await fetch("/new", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                hcaptcha: token,
+                title: titleElement.value
+            })
+        });
+
+        let responseJson = await response.json()
+
+        if (response.ok) {
+            let notification = document.createElement("div")
+            notification.className = "notification"
+
+            let title = document.createElement("h1")
+            title.innerText = "Success"
+
+            let linkToArg = document.createElement("a")
+            linkToArg.innerText = "Click here to jump into argument"
+            linkToArg.href = `/arguments/${responseJson.id}`
+
+            let description = document.createElement("h2")
+            description.innerText = "Save this secret key to remove your argument."
+
+            let secret = document.createElement("p")
+            secret.innerText = responseJson.secret
+
+            let remove = document.createElement("button")
+            remove.innerText = "Ok!"
+            remove.onclick = () => notification.remove()
+
+            notification.append(title, description, linkToArg, secret, remove)
+            document.body.appendChild(notification)            
+        } else {
+            document.getElementById("error").innerText = responseJson.error
+        }
+    });
+
+    captchaElement.addEventListener("error", ({ error }) => {
+        document.getElementById("error").innerText = error
+    });
+</script>
+</html>

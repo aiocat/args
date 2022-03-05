@@ -9,6 +9,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var (
+	HCATPCHA_SECRET = ""
+)
+
 func main() {
 	// Load .env file
 	err := godotenv.Load()
@@ -22,6 +26,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Set HCaptcha secret
+	HCATPCHA_SECRET = os.Getenv("CAPTCHA_SECRET")
+
 	engine := html.New("./views", ".html")
 
 	// New fiber app
@@ -32,8 +39,13 @@ func main() {
 	// Security check middleware
 	app.Use(SecurityCheck)
 
+	// Set static folder
+	app.Static("/", "./static")
+
 	// Setup routes
 	app.Get("/", IndexPage)
+	app.Get("/new", NewArgumentPage)
+	app.Post("/new", PostNewArgument)
 
 	log.Fatal(app.Listen(":3000"))
 }
