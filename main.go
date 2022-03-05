@@ -46,6 +46,8 @@ func main() {
 	app.Get("/", IndexPage)
 	app.Get("/new", NewArgumentPage)
 	app.Post("/new", PostNewArgument)
+	app.Get("/arguments/:id", ViewArgument)
+	app.Post("/arguments/:id", ReplyArgument)
 
 	log.Fatal(app.Listen(":3000"))
 }

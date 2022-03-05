@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Args | {{.Data.Title}}</title>
+    <link rel="stylesheet" href="/global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-hcaptcha"></script>
+  </head>
+  <body>
+    <div class="post">
+      <h1>{{.Data.Title}}</h1>
+      <h2 id="creation-date"></h2>
+      <div class="new-argument">
+        <textarea
+          name="argument"
+          id="argument"
+          cols="30"
+          rows="10"
+          placeholder="Argument..."
+        ></textarea>
+        <span id="agree">Agree</span>
+        <span id="however">However</span>
+        <span id="disagree">Disagree</span>
+        <button id="send">Send</button>
+        <h-captcha
+          id="captcha"
+          site-key="bfe0e662-099f-450d-9d85-4d11668930f2"
+          size="invisible"
+          tabindex="0"
+        ></h-captcha>
+        <p id="error"></p>
+      </div>
+    </div>
+  </body>
+  <script>
+        document.getElementById("creation-date").innerText = new Date({{.Data.CreatedAt}} * 1000);
+
+        var opinion = 0;
+        var agree = document.getElementById("agree");
+        var however = document.getElementById("however");
+        var disagree = document.getElementById("disagree");
+
+        agree.onclick = () => {
+            agree.style.borderWidth = "3px";
+            however.style.borderWidth = "1px";
+            disagree.style.borderWidth = "1px";
+            opinion = 1;
+        }
+
+        however.onclick = () => {
+            agree.style.borderWidth = "1px";
+            however.style.borderWidth = "3px";
+            disagree.style.borderWidth = "1px";
+            opinion = 2;
+        }
+
+        disagree.onclick = () => {
+            agree.style.borderWidth = "1px";
+            however.style.borderWidth = "1px";
+            disagree.style.borderWidth = "3px";
+            opinion = 3;
+        }
+        
+        var argument = document.getElementById("argument");
+        var captchaElement = document.getElementById("captcha");
+
+        document.getElementById("send").onclick = () => {
+            captchaElement.execute()
+        }
+
+        captchaElement.addEventListener("verified", async({ token }) => {
+            let response = await fetch("/arguments/{{.Data.Id}}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    hcaptcha: token,
+                    opinion,
+                    argument: argument.value
+                })
+            });
+
+            let responseJson = await response.json()
+
+            if (response.ok) {
+                let notification = document.createElement("div")
+                notification.className = "notification"
+
+                let title = document.createElement("h1")
+                title.innerText = "Success"
+
+                let description = document.createElement("h2")
+                description.innerText = "Save this secret key to remove your argument."
+
+                let secret = document.createElement("p")
+                secret.innerText = responseJson.secret
+
+                let remove = document.createElement("button")
+                remove.innerText = "Ok!"
+                remove.onclick = () => notification.remove()
+
+                notification.append(title, description, secret, remove)
+                document.body.appendChild(notification)            
+            } else {
+                document.getElementById("error").innerText = responseJson.error
+            }
+        });
+
+        captchaElement.addEventListener("error", ({ error }) => {
+            document.getElementById("error").innerText = error
+        });
+  </script>
+</html>
