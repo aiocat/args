@@ -125,8 +125,9 @@ func ViewArgument(c *fiber.Ctx) error {
 	}
 
 	return c.Render("argument", fiber.Map{
-		"Data":    argument,
-		"Replies": argumentReplies,
+		"Data":      argument,
+		"Replies":   argumentReplies,
+		"CreatedAt": time.Unix(argument.CreatedAt, 0),
 	})
 }
 

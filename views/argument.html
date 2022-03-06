@@ -11,7 +11,7 @@
 <body>
     <div class="post">
         <h1>{{.Data.Title}}</h1>
-        <h2 id="creation-date"></h2>
+        <h2 id="creation-date">{{.CreatedAt}}</h2>
         <div class="new-argument">
             <textarea name="argument" id="argument" cols="30" rows="10" placeholder="Enter an Argument..."></textarea>
             <span id="agree">Agree</span>
@@ -35,8 +35,6 @@
     </div>
 </body>
 <script>
-    document.getElementById("creation-date").innerText = new Date({{.Data.CreatedAt}} * 1000);
-
     var opinion = 0;
     var agree = document.getElementById("agree");
     var however = document.getElementById("however");
@@ -104,7 +102,10 @@
 
             let remove = document.createElement("button");
             remove.innerText = "Ok!";
-            remove.onclick = () => notification.remove();
+            remove.onclick = () => {
+                notification.remove();
+                window.location.reload();
+            };
 
             notification.append(title, description, secret, remove);
             document.body.appendChild(notification);
