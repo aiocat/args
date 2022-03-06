@@ -251,7 +251,7 @@ func ReportArgument(c *fiber.Ctx) error {
 	}
 
 	// Find argument
-	findRes := arguments.FindOneAndDelete(context.Background(), bson.M{"_id": argumentReport.Id})
+	findRes := arguments.FindOne(context.Background(), bson.M{"_id": argumentReport.Id})
 	if findRes.Err() != nil {
 		return c.Status(404).JSON(Error{"Argument not found"})
 	}
