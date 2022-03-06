@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -52,5 +53,5 @@ func main() {
 	app.Get("/reports/:id", ReportArgumentPage)
 	app.Post("/reports/", ReportArgument)
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(fmt.Sprintf(":%s", os.Getenv("PORT"))))
 }
