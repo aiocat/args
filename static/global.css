@@ -1,10 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 body,
 html {
   margin: 0 auto;
   background-color: #03040a;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
+  height: 100%;
 }
 
 :root {
@@ -31,7 +32,8 @@ html {
   font-weight: 600;
 }
 
-.invisible-card p, .post p {
+.invisible-card p,
+.new-argument p {
   color: rgb(255, 61, 61);
   font-size: 18px;
   font-weight: 400;
@@ -44,7 +46,7 @@ html {
   border: none;
   outline: none;
   border-bottom: 2px solid #fff;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   font-weight: 500;
   padding: 5px;
@@ -66,13 +68,14 @@ html {
   background-color: var(--front);
   border: 2px solid var(--front);
   outline: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 24px;
-  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
   padding: 5px 10px 5px 10px;
   transition: 500ms;
   margin: 20px auto;
   cursor: pointer;
+  border-radius: 10px;
   display: block;
 }
 
@@ -89,7 +92,7 @@ html {
   transform: translate(-50%, -50%);
   backdrop-filter: blur(20px);
   z-index: 10;
-  border-radius: 30px;
+  border-radius: 10px;
   border: 2px solid var(--front);
   padding: 20px;
   max-width: 512px;
@@ -138,7 +141,7 @@ html {
   border: 2px solid var(--front);
   border-radius: 10px;
   outline: none;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   font-weight: 400;
   padding: 5px 10px 5px 10px;
@@ -150,6 +153,12 @@ html {
 .post {
   padding: 100px;
   text-align: center;
+}
+
+.post hr {
+  margin: 30px auto;
+  width: 70%;
+  border: 1px dashed var(--front);
 }
 
 .post h1 {
@@ -166,27 +175,100 @@ html {
   margin: 5px auto;
 }
 
-#agree, #however, #disagree {
-    color: #000;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 5px;
-    margin: 10px auto;
+#agree,
+#however,
+#disagree {
+  color: #03040a;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 5px;
+  margin: 10px auto;
 }
 
 #agree {
-    background-color: rgb(101, 255, 71);
-    border: 1px solid rgb(46, 150, 25);
+  background-color: rgb(101, 255, 71);
+  border: 1px solid rgb(46, 150, 25);
 }
 
 #however {
-    background-color: rgb(255, 181, 71);
-    border: 1px solid rgb(250, 131, 34);
+  background-color: rgb(255, 181, 71);
+  border: 1px solid rgb(250, 131, 34);
 }
 
 #disagree {
-    background-color: rgb(255, 71, 71);
-    border: 1px solid rgb(150, 25, 25);
+  background-color: rgb(255, 71, 71);
+  border: 1px solid rgb(150, 25, 25);
+}
+
+.replies {
+  width: 50%;
+  margin: 0px auto;
+}
+
+.replies a {
+  display: block;
+  text-align: left;
+  color: #aaa;
+  text-decoration: none;
+  margin: 1px auto;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.replies a:hover {
+  text-decoration: underline;
+}
+
+.opinion-1 {
+  border: 2px solid rgb(101, 255, 71);
+}
+
+.opinion-1 p {
+  background-color: rgb(101, 255, 71);
+}
+
+.opinion-2 {
+  border: 2px solid rgb(255, 181, 71);
+}
+
+.opinion-2 p {
+  background-color: rgb(255, 181, 71);
+}
+
+.opinion-3 {
+  border: 2px solid rgb(255, 71, 71);
+}
+
+.opinion-3 p {
+  background-color: rgb(255, 71, 71);
+}
+
+.reply {
+  background: transparent;
+  text-align: left;
+  display: block;
+  border-radius: 10px;
+  margin: 10px auto;
+  width: 100%;
+}
+
+.reply p {
+  margin: 0 auto;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  text-align: center;
+  padding-top: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #03040a;
+}
+
+.reply h1 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  white-space: pre-line;
+  padding: 10px;
 }

@@ -10,6 +10,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Argument struct
@@ -23,13 +24,14 @@ type Argument struct {
 
 // Argument reply struct
 type ArgumentReply struct {
-	Opinion   int    `json:"opinion,omitempty" bson:"opinion"`
-	CreatedAt int64  `json:"created_at,omitempty" bson:"created_at,omitempty"`
-	HCaptcha  string `json:"hcaptcha,omitempty" bson:"-"`
-	Argument  string `json:"argument,omitempty" bson:"argument"`
-	Id        string `json:"id,omitempty" bson:"_id"`
-	Owner     string `json:"owner,omitempty" bson:"owner"`
-	Secret    string `json:"secret,omitempty" bson:"secret"`
+	Opinion       int       `json:"opinion,omitempty" bson:"opinion"`
+	CreatedAt     int64     `json:"created_at,omitempty" bson:"created_at,omitempty"`
+	HCaptcha      string    `json:"hcaptcha,omitempty" bson:"-"`
+	Argument      string    `json:"argument,omitempty" bson:"argument"`
+	Id            string    `json:"id,omitempty" bson:"_id"`
+	Owner         string    `json:"owner,omitempty" bson:"owner"`
+	Secret        string    `json:"secret,omitempty" bson:"secret"`
+	CreatedAtTime time.Time `json:"-" bson:"-"`
 }
 
 // Route for main page of the website (GET /)
@@ -97,8 +99,34 @@ func ViewArgument(c *fiber.Ctx) error {
 	}
 	findResult.Decode(&argument)
 
+	// Find argument replies
+	findOptions := options.Find()
+	findOptions.SetSort(bson.D{{Key: "created_at", Value: -1}})
+
+	cursor, err := arguments.Find(context.TODO(), bson.M{"owner": argumentParam}, findOptions)
+
+	if err != nil {
+		return c.Status(500).JSON(Error{"Database error"})
+	}
+
+	defer cursor.Close(context.TODO())
+
+	var argumentReplies []*ArgumentReply
+
+	for cursor.Next(context.TODO()) {
+		reply := new(ArgumentReply)
+		err := cursor.Decode(&reply)
+		if err != nil {
+			return c.Status(500).JSON(Error{"Database error"})
+		}
+
+		reply.CreatedAtTime = time.Unix(reply.CreatedAt, 0)
+		argumentReplies = append(argumentReplies, reply)
+	}
+
 	return c.Render("argument", fiber.Map{
-		"Data": argument,
+		"Data":    argument,
+		"Replies": argumentReplies,
 	})
 }
 
