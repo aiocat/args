@@ -110,7 +110,8 @@
         title.innerText = "Success";
 
         let description = document.createElement("h2");
-        description.innerText = "Save this secret key to remove your argument later.";
+        description.innerText =
+          "Save this secret key to remove your argument later.";
 
         let secret = document.createElement("p");
         secret.innerText = responseJson.secret;
@@ -170,7 +171,7 @@
     }
 
     if (document.getElementsByClassName("replies")[0].childElementCount > 0) {
-        calculateReplies();
+      calculateReplies();
     }
   </script>
 </html>

@@ -58,7 +58,8 @@
         linkToArg.href = `/arguments/${responseJson.id}`;
 
         let description = document.createElement("h2");
-        description.innerText = "Save this secret key to remove your discussion later.";
+        description.innerText =
+          "Save this secret key to remove your discussion later.";
 
         let secret = document.createElement("p");
         secret.innerText = responseJson.secret;

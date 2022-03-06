@@ -381,3 +381,21 @@ html {
     font-size: 16px;
   }
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fff #03040a;
+}
+
+*::-webkit-scrollbar {
+  width: 14px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #03040a;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border: 3px solid #03040a;
+}

@@ -88,76 +88,94 @@ html {
 }
 
 .product a:hover {
-    color: rgb(255, 62, 213);
-    background-color: #fff;
+  color: rgb(255, 62, 213);
+  background-color: #fff;
 }
 
 .container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    width: 90%;
-    box-sizing: border-box;
-    padding: 100px;
-    margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  box-sizing: border-box;
+  padding: 100px;
+  margin: 0 auto;
 }
 
 .container img {
-    width: 1024px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    margin: 0 auto;
+  width: 1024px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  margin: 0 auto;
 }
 
 .container div {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .container p {
-    word-break: break-all;
-    font-size: 24px;
-    font-weight: 700;
-    color: #eee;
+  word-break: break-all;
+  font-size: 24px;
+  font-weight: 700;
+  color: #eee;
 }
 
 .container a {
-    word-break: break-all;
-    font-size: 18px;
-    font-weight: 500;
-    color: #ddd;
-    text-decoration: none;
+  word-break: break-all;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ddd;
+  text-decoration: none;
 }
 
 .container a:hover {
-    color: #fff;
-    text-decoration: underline;
+  color: #fff;
+  text-decoration: underline;
 }
 
 .container a::before {
-    content: "➡ ";
-    color: #fff;
+  content: "➡ ";
+  color: #fff;
 }
 
 @media only screen and (max-width: 1240px) {
-    .container img {
-        width: 90%;
-    }
+  .container img {
+    width: 90%;
+  }
 }
 
 .social {
-    width: 100%;
-    padding: 20px;
-    background-color: #fff;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-around;
-    box-sizing: border-box;
-    margin: 30px auto;
-    margin-bottom: 0px;
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+  margin: 30px auto;
+  margin-bottom: 0px;
 }
 
 .social img {
-    width: 32px;
+  width: 32px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fff #03040a;
+}
+
+*::-webkit-scrollbar {
+  width: 14px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #03040a;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border: 3px solid #03040a;
 }
