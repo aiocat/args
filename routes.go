@@ -67,7 +67,7 @@ func PostNewArgument(c *fiber.Ctx) error {
 	}
 
 	// Check title and captcha key
-	if len(argument.Title) > 160 || len(argument.Title) < 8 {
+	if len(argument.Title) > 160 || len(argument.Title) < 4 {
 		return c.Status(400).JSON(Error{"Title is too long or too short"})
 	} else if !HCaptchaChecker(argument.HCaptcha) {
 		return c.Status(400).JSON(Error{"Invalid hcaptcha key"})
@@ -165,7 +165,7 @@ func ReplyArgument(c *fiber.Ctx) error {
 	// Check argument, opinion and captcha
 	if len(argumentReply.Argument) > 1024 {
 		return c.Status(400).JSON(Error{"Argument is too long"})
-	} else if len(argumentReply.Argument) < 120 {
+	} else if len(argumentReply.Argument) < 24 {
 		return c.Status(400).JSON(Error{"Argument is too short"})
 	} else if !(argumentReply.Opinion == 1 || argumentReply.Opinion == 2 || argumentReply.Opinion == 3) {
 		return c.Status(400).JSON(Error{"Opinion is out of index"})
