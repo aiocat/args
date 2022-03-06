@@ -46,7 +46,7 @@ func NewArgumentPage(c *fiber.Ctx) error {
 	return c.SendFile("./views/new.html")
 }
 
-// Route for add new argument to the database (POST /new)
+// Route for add new argument to the database (POST /arguments)
 func PostNewArgument(c *fiber.Ctx) error {
 	// Check content type
 	if c.Get("content-type", "") != "application/json" {
@@ -86,7 +86,7 @@ func PostNewArgument(c *fiber.Ctx) error {
 	return c.Status(200).JSON(map[string]string{"secret": argument.Secret, "id": argument.Id})
 }
 
-// View argument route (GET /argument/:id)
+// View argument route (GET /arguments/:id)
 func ViewArgument(c *fiber.Ctx) error {
 	argumentParam := c.Params("id")
 	argument := new(Argument)
@@ -131,8 +131,13 @@ func ViewArgument(c *fiber.Ctx) error {
 	})
 }
 
-// Reply argument route (POST /argument/:id)
+// Reply argument route (POST /arguments/:id)
 func ReplyArgument(c *fiber.Ctx) error {
+	// Check content type
+	if c.Get("content-type", "") != "application/json" {
+		return c.Status(400).JSON(Error{"Content must be application/json"})
+	}
+
 	argumentParam := c.Params("id")
 	argument := new(Argument)
 	arguments := DATABASE.GetCollection("arguments")
@@ -154,8 +159,10 @@ func ReplyArgument(c *fiber.Ctx) error {
 	}
 
 	// Check argument, opinion and captcha
-	if len(argumentReply.Argument) > 1024 || len(argumentReply.Argument) < 8 {
-		return c.Status(400).JSON(Error{"Argument is too long or too short"})
+	if len(argumentReply.Argument) > 1024 {
+		return c.Status(400).JSON(Error{"Argument is too long"})
+	} else if len(argumentReply.Argument) < 120 {
+		return c.Status(400).JSON(Error{"Argument is too short"})
 	} else if !(argumentReply.Opinion == 1 || argumentReply.Opinion == 2 || argumentReply.Opinion == 3) {
 		return c.Status(400).JSON(Error{"Opinion is out of index"})
 	} else if !HCaptchaChecker(argumentReply.HCaptcha) {
@@ -178,4 +185,34 @@ func ReplyArgument(c *fiber.Ctx) error {
 	}
 
 	return c.Status(200).JSON(map[string]string{"secret": argumentReply.Secret, "id": argumentReply.Id})
+}
+
+// Route for new argument page of the website (GET /delete)
+func DeleteArgumentPage(c *fiber.Ctx) error {
+	return c.SendFile("./views/delete.html")
+}
+
+// Delete argument route (DELETE /arguments/:secret)
+func DeleteArgument(c *fiber.Ctx) error {
+	secretKey := c.Params("secret")
+	arguments := DATABASE.GetCollection("arguments")
+	argument := new(Argument)
+
+	// Find argument
+	findRes := arguments.FindOneAndDelete(context.Background(), bson.M{"secret": secretKey})
+	if findRes.Err() != nil {
+		return c.Status(404).JSON(Error{"Argument not found"})
+	}
+	findRes.Decode(&argument)
+
+	// Check if post
+	if argument.Title != "" {
+		// Delete replies
+		_, err := arguments.DeleteMany(context.Background(), bson.M{"owner": argument.Id})
+		if err != nil {
+			return c.Status(500).JSON(Error{"Database error"})
+		}
+	}
+
+	return c.SendStatus(204)
 }

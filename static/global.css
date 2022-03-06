@@ -5,7 +5,6 @@ html {
   margin: 0 auto;
   background-color: #03040a;
   font-family: "Inter", sans-serif;
-  height: 100%;
 }
 
 :root {
@@ -73,7 +72,7 @@ html {
   font-weight: 700;
   padding: 5px 10px 5px 10px;
   transition: 500ms;
-  margin: 20px auto;
+  margin: 10px auto;
   cursor: pointer;
   border-radius: 10px;
   display: block;
@@ -86,7 +85,7 @@ html {
 
 .notification {
   background: transparent;
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -175,9 +174,9 @@ html {
   margin: 5px auto;
 }
 
-#agree,
-#however,
-#disagree {
+.agree,
+.however,
+.disagree {
   color: #03040a;
   cursor: pointer;
   border-radius: 10px;
@@ -185,19 +184,20 @@ html {
   font-weight: 700;
   padding: 5px;
   margin: 10px auto;
+  display: inline-block;
 }
 
-#agree {
+.agree {
   background-color: rgb(101, 255, 71);
   border: 1px solid rgb(46, 150, 25);
 }
 
-#however {
+.however {
   background-color: rgb(255, 181, 71);
   border: 1px solid rgb(250, 131, 34);
 }
 
-#disagree {
+.disagree {
   background-color: rgb(255, 71, 71);
   border: 1px solid rgb(150, 25, 25);
 }
@@ -293,7 +293,9 @@ html {
     width: 90%;
   }
 
-  .post #agree, .post #however, .post #disagree {
+  .post .agree,
+  .post .however,
+  .post .disagree {
     display: block;
     width: 50%;
   }
@@ -322,7 +324,7 @@ html {
     font-size: 16px;
     font-weight: 500;
   }
-  
+
   .reply p {
     font-size: 12px;
     font-weight: 400;
@@ -346,5 +348,40 @@ html {
     width: 90%;
     margin: 10px auto;
     padding: 5px;
+  }
+
+  .notification {
+    background: transparent;
+    backdrop-filter: blur(20px);
+    border-radius: 0px;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .notification h1 {
+    font-size: 28px;
+  }
+
+  .notification h2 {
+    font-size: 20px;
+  }
+
+  .notification a {
+    font-size: 16px;
+  }
+
+  .notification p {
+    font-size: 16px;
+    padding: 5px;
+    margin: 10px auto;
+    word-wrap: break-word;
+  }
+
+  .notification button {
+    font-size: 16px;
   }
 }

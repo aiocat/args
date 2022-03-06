@@ -33,7 +33,7 @@
     };
 
     captchaElement.addEventListener("verified", async ({ token }) => {
-      let response = await fetch("/new", {
+      let response = await fetch("/arguments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@
         linkToArg.href = `/arguments/${responseJson.id}`;
 
         let description = document.createElement("h2");
-        description.innerText = "Save this secret key to remove your argument.";
+        description.innerText = "Save this secret key to remove your argument later.";
 
         let secret = document.createElement("p");
         secret.innerText = responseJson.secret;

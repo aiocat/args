@@ -45,9 +45,11 @@ func main() {
 	// Setup routes
 	app.Get("/", IndexPage)
 	app.Get("/new", NewArgumentPage)
-	app.Post("/new", PostNewArgument)
+	app.Get("/delete", DeleteArgumentPage)
+	app.Post("/arguments", PostNewArgument)
 	app.Get("/arguments/:id", ViewArgument)
 	app.Post("/arguments/:id", ReplyArgument)
+	app.Delete("/arguments/:secret", DeleteArgument)
 
 	log.Fatal(app.Listen(":3000"))
 }
