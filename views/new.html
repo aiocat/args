@@ -83,7 +83,10 @@
 
         let remove = document.createElement("button");
         remove.innerText = "Ok!";
-        remove.onclick = () => notification.remove();
+        remove.onclick = () => {
+          notification.remove();
+          window.location.href = `/arguments/${responseJson.id}`;
+        };
 
         notification.append(title, description, linkToArg, secret, remove);
         document.body.appendChild(notification);
