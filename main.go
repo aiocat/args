@@ -16,13 +16,10 @@ var (
 
 func main() {
 	// Load .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	godotenv.Load()
 
 	// Start database connection
-	err = DATABASE.StartConnection(os.Getenv("MONGO_URI"))
+	err := DATABASE.StartConnection(os.Getenv("MONGO_URI"))
 	if err != nil {
 		log.Fatal(err)
 	}
