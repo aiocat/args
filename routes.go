@@ -13,6 +13,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var (
+	REPLIES_PER_PAGE = 2
+)
+
 // Argument struct
 type Argument struct {
 	CreatedAt int64  `json:"created_at,omitempty" bson:"created_at,omitempty"`
@@ -115,23 +119,45 @@ func ViewArgument(c *fiber.Ctx) error {
 
 	defer cursor.Close(context.TODO())
 
+	// Parse query parameter
+	page := c.Query("page", "0")
+	pageInt, err := strconv.Atoi(page)
+
+	if err != nil || pageInt < 0 {
+		return c.Status(400).JSON(Error{"Invalid page query"})
+	}
+
+	// Collect replies
+	toBeContinued := false
+	currentIndex := 0
+	startAt := pageInt * REPLIES_PER_PAGE
+	endAt := startAt + REPLIES_PER_PAGE
+
 	var argumentReplies []*ArgumentReply
 
 	for cursor.Next(context.TODO()) {
-		reply := new(ArgumentReply)
-		err := cursor.Decode(&reply)
-		if err != nil {
-			return c.Status(500).JSON(Error{"Database error"})
-		}
+		if currentIndex >= startAt && currentIndex < endAt {
+			reply := new(ArgumentReply)
+			err := cursor.Decode(&reply)
+			if err != nil {
+				return c.Status(500).JSON(Error{"Database error"})
+			}
 
-		reply.CreatedAtTime = time.Unix(reply.CreatedAt, 0)
-		argumentReplies = append(argumentReplies, reply)
+			reply.CreatedAtTime = time.Unix(reply.CreatedAt, 0)
+			argumentReplies = append(argumentReplies, reply)
+		} else if currentIndex >= endAt {
+			toBeContinued = true
+			break
+		}
+		currentIndex++
 	}
 
 	return c.Render("argument", fiber.Map{
 		"Data":      argument,
 		"Replies":   argumentReplies,
 		"CreatedAt": time.Unix(argument.CreatedAt, 0),
+		"Continues": toBeContinued,
+		"NextPage":  pageInt + 1,
 	})
 }
 

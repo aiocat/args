@@ -61,6 +61,11 @@
         <a href="/delete">Delete</a>
         {{end}}
       </div>
+      {{if .Continues}}
+      <a class="page-manager" href="/arguments/{{.Data.Id}}?page={{.NextPage}}">Next Page</a>
+      {{else}}
+      <a class="page-manager" href="/arguments/{{.Data.Id}}?page=0">Page Start</a>
+      {{end}}
     </div>
   </body>
   <script src="/js/argument.js"></script>
