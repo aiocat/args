@@ -1,2 +1,2 @@
 # args
-Anonymous opinion sharing and advocacy platform
+Anonymous argument sharing and advocacy platform

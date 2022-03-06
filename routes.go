@@ -42,9 +42,7 @@ type ArgumentReport struct {
 
 // Route for main page of the website (GET /)
 func IndexPage(c *fiber.Ctx) error {
-	return c.Render("index", fiber.Map{
-		"Title": "Hello, World!",
-	})
+	return c.SendFile("./views/index.html")
 }
 
 // Route for new argument page of the website (GET /new)
