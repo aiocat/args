@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Args | Report Argument</title>
+    <link rel="stylesheet" href="/global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-hcaptcha"></script>
+  </head>
+  <body>
+    <div class="center">
+      <div class="invisible-card">
+        <h1>Report Argument</h1>
+        <h-captcha
+          id="captcha"
+          site-key="bfe0e662-099f-450d-9d85-4d11668930f2"
+          size="invisible"
+          tabindex="0"
+        ></h-captcha>
+        <button id="send">Report</button>
+        <p id="error"></p>
+      </div>
+    </div>
+  </body>
+  <script>
+    var captchaElement = document.getElementById("captcha");
+
+    document.getElementById("send").onclick = () => {
+      captchaElement.execute();
+    };
+
+    captchaElement.addEventListener("verified", async ({ token }) => {
+      let response = await fetch("/reports", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          hcaptcha: token,
+          id: "{{.Id}}",
+        }),
+      });
+
+      if (response.ok) {
+        window.location.href = "/";
+      } else {
+        let responseJson = await response.json();
+        document.getElementById("error").innerText = responseJson.error;
+      }
+    });
+
+    captchaElement.addEventListener("error", ({ error }) => {
+      document.getElementById("error").innerText = error;
+    });
+  </script>
+</html>

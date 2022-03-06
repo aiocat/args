@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	HCATPCHA_SECRET = ""
+	HCATPCHA_SECRET    = ""
+	REPORT_WEBHOOK_URL = ""
 )
 
 func main() {
@@ -26,8 +27,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Set HCaptcha secret
+	// Set environment variables
 	HCATPCHA_SECRET = os.Getenv("CAPTCHA_SECRET")
+	REPORT_WEBHOOK_URL = os.Getenv("WEBHOOK_URI")
 
 	engine := html.New("./views", ".html")
 
@@ -50,6 +52,8 @@ func main() {
 	app.Get("/arguments/:id", ViewArgument)
 	app.Post("/arguments/:id", ReplyArgument)
 	app.Delete("/arguments/:secret", DeleteArgument)
+	app.Get("/reports/:id", ReportArgumentPage)
+	app.Post("/reports/", ReportArgument)
 
 	log.Fatal(app.Listen(":3000"))
 }

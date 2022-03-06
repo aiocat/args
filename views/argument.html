@@ -43,7 +43,8 @@
           <h1>{{.Argument}}</h1>
           <p>{{.CreatedAtTime}}</p>
         </div>
-        <a href="/report/{{.Id}}">Report</a>
+        <a href="/reports/{{.Id}}">Report</a>
+        <a href="/delete">Delete</a>
         {{end}}
       </div>
     </div>
@@ -146,7 +147,7 @@
       var declines = 0;
       var totalReplies = replies.childElementCount;
 
-      for (let i = 0; i < totalReplies; i += 2) {
+      for (let i = 0; i < totalReplies; i += 3) {
         let foundElem = replies.children[i];
         let opinion = parseInt(foundElem.className.split("-")[1]);
 
@@ -161,11 +162,11 @@
 
       // Calculate percents
       document.getElementById("agree-percent").innerText =
-        "%" + Math.round((accepts / (totalReplies / 2)) * 100);
+        "%" + Math.round((accepts / (totalReplies / 3)) * 100);
       document.getElementById("however-percent").innerText =
-        "%" + Math.round((howevers / (totalReplies / 2)) * 100);
+        "%" + Math.round((howevers / (totalReplies / 3)) * 100);
       document.getElementById("disagree-percent").innerText =
-        "%" + Math.round((declines / (totalReplies / 2)) * 100);
+        "%" + Math.round((declines / (totalReplies / 3)) * 100);
     }
 
     if (document.getElementsByClassName("replies")[0].childElementCount > 0) {

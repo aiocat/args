@@ -208,11 +208,11 @@ html {
 }
 
 .replies a {
-  display: block;
+  display: inline-block;
   text-align: left;
   color: #aaa;
   text-decoration: none;
-  margin: 1px auto;
+  margin: 2px auto;
   font-size: 14px;
   font-weight: 500;
 }

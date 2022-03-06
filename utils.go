@@ -53,3 +53,12 @@ func HCaptchaChecker(resp string) bool {
 
 	return result.Success
 }
+
+// Execute webhook to report argument
+func ExecuteReportWebhook(argument *ArgumentReply) error {
+	values := map[string]string{"username": "Report", "content": ("**Argument ID**: `" + argument.Id + "`\n**Argument**: ```" + argument.Argument + "```")}
+	jsonToString, _ := json.Marshal(values)
+
+	_, err := http.Post(REPORT_WEBHOOK_URL, "application/json", bytes.NewBuffer(jsonToString))
+	return err
+}

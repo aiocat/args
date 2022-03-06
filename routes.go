@@ -34,6 +34,12 @@ type ArgumentReply struct {
 	CreatedAtTime time.Time `json:"-" bson:"-"`
 }
 
+// Argument report struct
+type ArgumentReport struct {
+	HCaptcha string `json:"hcaptcha,omitempty" bson:"-"`
+	Id       string `json:"id,omitempty" bson:"-"`
+}
+
 // Route for main page of the website (GET /)
 func IndexPage(c *fiber.Ctx) error {
 	return c.Render("index", fiber.Map{
@@ -212,6 +218,51 @@ func DeleteArgument(c *fiber.Ctx) error {
 		if err != nil {
 			return c.Status(500).JSON(Error{"Database error"})
 		}
+	}
+
+	return c.SendStatus(204)
+}
+
+// Route for report argument page of the website (GET /reports/:id)
+func ReportArgumentPage(c *fiber.Ctx) error {
+	return c.Render("report", fiber.Map{
+		"Id": c.Params("id"),
+	})
+}
+
+// Report argument route (POST /reports)
+func ReportArgument(c *fiber.Ctx) error {
+	// Check content type
+	if c.Get("content-type", "") != "application/json" {
+		return c.Status(400).JSON(Error{"Content must be application/json"})
+	}
+
+	arguments := DATABASE.GetCollection("arguments")
+	argument := new(ArgumentReply)
+	argumentReport := new(ArgumentReport)
+
+	// Decode from body
+	err := json.Unmarshal(c.Body(), &argumentReport)
+	if err != nil {
+		return c.Status(400).JSON(Error{"Invalid form"})
+	}
+
+	// Check HCaptcha
+	if !HCaptchaChecker(argumentReport.HCaptcha) {
+		return c.Status(400).JSON(Error{"Invalid hcaptcha key"})
+	}
+
+	// Find argument
+	findRes := arguments.FindOneAndDelete(context.Background(), bson.M{"_id": argumentReport.Id})
+	if findRes.Err() != nil {
+		return c.Status(404).JSON(Error{"Argument not found"})
+	}
+	findRes.Decode(&argument)
+
+	// Execute report webhook
+	err = ExecuteReportWebhook(argument)
+	if err != nil {
+		return c.Status(500).JSON(Error{"Webhook error"})
 	}
 
 	return c.SendStatus(204)
