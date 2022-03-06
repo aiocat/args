@@ -162,6 +162,33 @@ html {
   width: 32px;
 }
 
+
+@media only screen and (max-width: 560px) {
+  .product h1 {
+    font-size: 32px;
+    font-weight: 700;
+  }
+
+  .product p {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .container {
+    padding: 5px;
+  }
+
+  .container p {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .container a {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #fff #03040a;
