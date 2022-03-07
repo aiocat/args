@@ -34,6 +34,7 @@ View demo here: https://args-app.herokuapp.com
 
 - `GET /`
 - `GET /new`
+- `GET /saves`
 - `GET /arguments/:id`
 - `POST /arguments`
 - `POST /arguments/:id`

@@ -79,6 +79,27 @@ html {
   background-color: transparent;
 }
 
+#save {
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-family: "Work Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 5px 10px 5px 10px;
+  transition: 500ms;
+  margin: 10px auto;
+  cursor: pointer;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+#save:hover {
+  color: rgb(255, 62, 213);
+  background-color: transparent;
+}
+
 .notification {
   background: transparent;
   position: fixed;

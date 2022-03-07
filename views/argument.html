@@ -29,6 +29,7 @@
       <span class="agree" id="agree-percent"></span>
       <span class="however" id="however-percent"></span>
       <span class="disagree" id="disagree-percent"></span>
+      <button id="save">Save</button>
       <div class="new-argument">
         <textarea
           name="argument"
@@ -71,5 +72,6 @@
   <script src="/js/argument.js"></script>
   <script>
       parseArgument("{{.Data.Id}}")
+      prepareSave("{{.Data.Title}}", "{{.Data.Id}}")
   </script>
 </html>

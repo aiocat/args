@@ -2,9 +2,9 @@ var opinion = 0;
 
 // Prepare opinions
 function prepareOpinions() {
-    var agree = document.getElementById("agree");
-    var however = document.getElementById("however");
-    var disagree = document.getElementById("disagree");
+    let agree = document.getElementById("agree");
+    let however = document.getElementById("however");
+    let disagree = document.getElementById("disagree");
 
     agree.onclick = () => {
         agree.style.borderWidth = "3px";
@@ -30,8 +30,8 @@ function prepareOpinions() {
 
 // Parse argument
 function parseArgument(argument_id) {
-    var argument = document.getElementById("argument");
-    var captchaElement = document.getElementById("captcha");
+    let argument = document.getElementById("argument");
+    let captchaElement = document.getElementById("captcha");
 
     document.getElementById("send").onclick = () => {
         if (opinion === 0) {
@@ -95,13 +95,41 @@ function parseArgument(argument_id) {
     });
 }
 
+// Prepare save
+function prepareSave(title, argument_id) {
+    let argumentStorage = localStorage.getItem("arguments")
+    let saveElement = document.getElementById("save")
+
+    if (!argumentStorage) {
+        argumentStorage = JSON.stringify([])
+        localStorage.setItem("arguments", argumentStorage)
+    }
+
+    let argumentStorageParsed = JSON.parse(argumentStorage)
+    
+    if (argumentStorageParsed.filter(i => i.id === argument_id).length) {
+        saveElement.innerText = "Saved"
+        saveElement.disabled = true
+    } else {
+        saveElement.onclick = () => {
+            argumentStorageParsed.push({"title": title, "id": argument_id})
+    
+            argumentStorage = JSON.stringify(argumentStorageParsed)
+            localStorage.setItem("arguments", argumentStorage)
+
+            saveElement.innerText = "Saved"
+            saveElement.disabled = true
+        }
+    }
+}
+
 // Calculate replies
 function calculateReplies() {
-    var replies = document.getElementsByClassName("replies")[0];
-    var accepts = 0;
-    var howevers = 0;
-    var declines = 0;
-    var totalReplies = replies.childElementCount;
+    let replies = document.getElementsByClassName("replies")[0];
+    let accepts = 0;
+    let howevers = 0;
+    let declines = 0;
+    let totalReplies = replies.childElementCount;
 
     for (let i = 0; i < totalReplies; i += 3) {
         let foundElem = replies.children[i];

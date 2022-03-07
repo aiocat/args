@@ -47,6 +47,7 @@ func main() {
 	app.Get("/new", NewArgumentPage)
 	app.Get("/delete", DeleteArgumentPage)
 	app.Post("/arguments", PostNewArgument)
+	app.Get("/saves", SavedArgumentsPage)
 	app.Get("/arguments/:id", ViewArgument)
 	app.Post("/arguments/:id", ReplyArgument)
 	app.Delete("/arguments/:secret", DeleteArgument)

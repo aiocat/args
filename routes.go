@@ -291,3 +291,8 @@ func ReportArgument(c *fiber.Ctx) error {
 
 	return c.SendStatus(204)
 }
+
+// Route for saved arguments page of the website (GET /saves)
+func SavedArgumentsPage(c *fiber.Ctx) error {
+	return c.SendFile("./views/saves.html")
+}
