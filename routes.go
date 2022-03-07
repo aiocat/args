@@ -71,7 +71,7 @@ func PostNewArgument(c *fiber.Ctx) error {
 	}
 
 	// Check title and captcha key
-	if len(argument.Title) > 160 || len(argument.Title) < 4 {
+	if len(argument.Title) > 120 || len(argument.Title) < 4 {
 		return c.Status(400).JSON(Error{"Title is too long or too short"})
 	} else if !HCaptchaChecker(argument.HCaptcha) {
 		return c.Status(400).JSON(Error{"Invalid hcaptcha key"})

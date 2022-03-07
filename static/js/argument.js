@@ -37,7 +37,14 @@ function parseArgument(argument_id) {
         if (opinion === 0) {
             document.getElementById("error").innerText = "Please select an opinion";
             return;
+        } else if (argument.value.length < 24) {
+            document.getElementById("error").innerText = "Argument is too short";
+            return;
+        } else if (argument.value.length > 1024) {
+            document.getElementById("error").innerText = "Argument is too long";
+            return;
         }
+        
         captchaElement.execute();
     };
 

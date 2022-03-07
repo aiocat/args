@@ -2,6 +2,14 @@ var titleElement = document.getElementById("title");
 var captchaElement = document.getElementById("captcha");
 
 document.getElementById("send").onclick = () => {
+    if (titleElement.value.length < 4) {
+        document.getElementById("error").innerText = "Title is too short";
+        return;
+    } else if (titleElement.value.length > 120) {
+        document.getElementById("error").innerText = "Title is too long";
+        return;
+    }
+    
     captchaElement.execute();
 };
 
