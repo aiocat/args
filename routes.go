@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	REPLIES_PER_PAGE = 2
+	REPLIES_PER_PAGE = 50
 )
 
 // Argument struct
@@ -107,6 +107,11 @@ func ViewArgument(c *fiber.Ctx) error {
 	}
 	findResult.Decode(&argument)
 
+	// Check if argument or reply
+	if argument.Title == "" {
+		return c.Status(404).JSON(Error{"Argument not found"})
+	}
+
 	// Find argument replies
 	findOptions := options.Find()
 	findOptions.SetSort(bson.D{{Key: "created_at", Value: -1}})
@@ -178,6 +183,11 @@ func ReplyArgument(c *fiber.Ctx) error {
 		return c.Status(404).JSON(Error{"Argument not found"})
 	}
 	findResult.Decode(&argument)
+
+	// Check if argument or reply
+	if argument.Title == "" {
+		return c.Status(404).JSON(Error{"Argument not found"})
+	}
 
 	// New argument reply
 	argumentReply := new(ArgumentReply)
